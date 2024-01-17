@@ -40,7 +40,7 @@ begin
   Result := 'Invalid "' + AValueName + '" value for SystemTime: ' + IntToStr(AValue);
 end;
 
-function MonthLenght(const AYear, AMonth: Integer): Integer;
+function MonthLength(const AYear, AMonth: Integer): Integer;
 begin
   case AMonth of
     1: Result := 31; 
@@ -75,7 +75,7 @@ begin
 
   Result.DayOfWeek := 0; 
 
-  if (ADay >= 1) and (ADay <= (MonthLenght(Result.Year, Result.Month))) then
+  if (ADay >= 1) and (ADay <= (MonthLength(Result.Year, Result.Month))) then
     Result.Day := ADay
   else
     RaiseException(GetSystemTimeErrorStr('Day', ADay));
@@ -105,7 +105,7 @@ function DecMonth(const ATime: SYSTEMTIME; const AMonthsToDec: Integer): SYSTEMT
 var
   LYears: Integer;
   LMonthsToDec: Integer; 
-  LMonthLenght: Integer;
+  LMonthLength: Integer;
 begin
   Result := ATime
   LMonthsToDec := AMonthsToDec;
@@ -125,9 +125,9 @@ begin
     Result.Month := 12 - (LMonthsToDec - Result.Month);
   end;
 
-  LMonthLenght := MonthLenght(Result.Year, Result.Month);
-  if Result.Day > LMonthLenght then
-    Result.Day := LMonthLenght;
+  LMonthLength := MonthLength(Result.Year, Result.Month);
+  if Result.Day > LMonthLength then
+    Result.Day := LMonthLength;
 end;
 
 function SameSystemTime(const ASystemTime1, ASystemTime2: SYSTEMTIME): Boolean;
