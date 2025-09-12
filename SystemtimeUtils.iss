@@ -13,10 +13,10 @@ type
   end; 
 
 // WinAPI declarations
-  function FileTimeToSystemTime(const FileTime: TFileTime; var SystemTime: SYSTEMTIME): BOOL; external 'FileTimeToSystemTime@kernel32.dll stdcall';
-  procedure GetLocalTime(var SystemTime: SYSTEMTIME); external 'GetLocalTime@kernel32.dll stdcall';
-  function SystemTimeToFileTime(const SystemTime: SYSTEMTIME; var FileTime: TFileTime): BOOL; external 'SystemTimeToFileTime@kernel32.dll stdcall';
-  function CompareFileTime(const FileTime1, FileTime2: TFileTime): Integer; external 'CompareFileTime@kernel32.dll stdcall';
+  function FileTimeToSystemTime(const AFileTime: TFileTime; var ASystemTime: SYSTEMTIME): BOOL; external 'FileTimeToSystemTime@kernel32.dll stdcall';
+  procedure GetLocalTime(var ASystemTime: SYSTEMTIME); external 'GetLocalTime@kernel32.dll stdcall';
+  function SystemTimeToFileTime(const ASystemTime: SYSTEMTIME; var AFileTime: TFileTime): BOOL; external 'SystemTimeToFileTime@kernel32.dll stdcall';
+  function CompareFileTime(const AFileTime1, AFileTime2: TFileTime): Integer; external 'CompareFileTime@kernel32.dll stdcall';
 
 function IsLeapYear(const AYear: Integer): Boolean;
 begin
@@ -181,7 +181,7 @@ begin
               Result := True
             else 
             begin
-              if ASystemTime1.Millisecond <= ASystemTime2.Millisecond then
+              if ASystemTime1.Millisecond < ASystemTime2.Millisecond then
                 Result := False
               else if ASystemTime1.Millisecond > ASystemTime2.Millisecond then 
                 Result := True
