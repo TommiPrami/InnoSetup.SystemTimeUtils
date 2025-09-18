@@ -1,4 +1,5 @@
-﻿// SystemtimeUtils.iss
+﻿[Code]
+// SystemtimeUtils.iss
 
 type
   SYSTEMTIME = record 
@@ -17,6 +18,11 @@ type
   procedure GetLocalTime(var ASystemTime: SYSTEMTIME); external 'GetLocalTime@kernel32.dll stdcall';
   function SystemTimeToFileTime(const ASystemTime: SYSTEMTIME; var AFileTime: TFileTime): BOOL; external 'SystemTimeToFileTime@kernel32.dll stdcall';
   function CompareFileTime(const AFileTime1, AFileTime2: TFileTime): Integer; external 'CompareFileTime@kernel32.dll stdcall';
+
+function LocalTime: SYSTEMTIME;
+begin
+  GetLocalTime(Result);
+end;
 
 function IsLeapYear(const AYear: Integer): Boolean;
 begin
@@ -99,6 +105,14 @@ begin
     Result.Millisecond := AMillisecond
   else
     RaiseException(GetSystemTimeErrorStr('Millisecond', AMillisecond));
+end;
+
+function InitSystemDate(const AYear, AMonth, ADay: WORD; const AEndOfDate: Boolean): SYSTEMTIME;
+begin 
+  if AEndOfDate then
+    Result := InitSystemTime(AYear, AMonth, ADay, 23, 59, 59, 999)
+  else
+    Result := InitSystemTime(AYear, AMonth, ADay, 0, 0, 0, 0);
 end;
 
 function DecMonth(const ATime: SYSTEMTIME; const AMonthsToDec: Integer): SYSTEMTIME;
@@ -204,6 +218,8 @@ begin
 end;
 
 (*
+  Have to test properly this version, would be much simpler
+
 function CompareSystemTime(const ASystemTime1, ASystemTime2: SYSTEMTIME): Integer;
 var
   LFileTime1: TFileTime;
