@@ -115,6 +115,35 @@ begin
     Result := InitSystemTime(AYear, AMonth, ADay, 0, 0, 0, 0);
 end;
 
+function UpdateSystemTimeValue(const ASystemTime: SYSTEMTIME; const AHour, AMinute, ASecond, AMillisecond: WORD): SYSTEMTIME;
+begin
+  Result := ASystemTime;
+
+  Result.Hour := AHour;
+  Result.Minute := AMinute;
+  Result.Second := ASecond;
+  Result.Millisecond := AMillisecond;
+end;
+
+function UpdateSystemDateValue(const ASystemTime: SYSTEMTIME; const AYear, AMonth, ADay: WORD): SYSTEMTIME;
+begin
+  Result := ASystemTime;
+
+  Result.Year := AYear;
+  Result.Month := AMonth;
+  Result.Day := ADay;
+end;
+
+function UpdateSystemTimeValueToEndOfDay(const ASystemTime: SYSTEMTIME): SYSTEMTIME;
+begin
+  Result := ASystemTime;
+
+  Result.Hour := 23; 
+  Result.Minute := 59;
+  Result.Second := 59;
+  Result.Millisecond := 999;
+end;
+
 function DecMonth(const ATime: SYSTEMTIME; const AMonthsToDec: Integer): SYSTEMTIME;
 var
   LYears: Integer;
@@ -137,6 +166,35 @@ begin
   begin
     RESULT.YEAR := Result.Year - 1;
     Result.Month := 12 - (LMonthsToDec - Result.Month);
+  end;
+
+  LMonthLength := MonthLength(Result.Year, Result.Month);
+  if Result.Day > LMonthLength then
+    Result.Day := LMonthLength;
+end;
+
+function IncMonth(const ATime: SYSTEMTIME; const AMonthsToInc: Integer): SYSTEMTIME;
+var
+  LYears: Integer;
+  LMonthsToInc: Integer; 
+  LMonthLength: Integer;
+begin
+  Result := ATime
+  LMonthsToInc := AMonthsToInc;
+
+  if LMonthsToInc >= 12 then
+  begin
+    LYears := LMonthsToInc div 12;
+    LMonthsToInc := LMonthsToInc - (LYears * 12); 
+    Result.Year := Result.Year + LYears;
+  end;
+
+  if (Result.Month + LMonthsToInc) < 12  then
+    Result.Month := Result.Month + LMonthsToInc
+  else
+  begin
+    RESULT.YEAR := Result.Year + 1;
+    Result.Month := 12 - (Result.Month + LMonthsToInc);
   end;
 
   LMonthLength := MonthLength(Result.Year, Result.Month);
