@@ -290,6 +290,12 @@ begin
 end; 
 *)
 
+function GetFileSystemLegalTimeStamp(const ATimeStamp: SYSTEMTIME): string;
+begin
+  Result := Format('%.4d_%.2d_%.2d-%.2d_%.2d_%.2d_%.3d', [ATimeStamp.Year, ATimeStamp.Month, ATimeStamp.Day, 
+    ATimeStamp.Hour, ATimeStamp.Minute, ATimeStamp.Second, ATimeStamp.Millisecond]);
+end;
+
 function GetSortableTimeStampStr(const ATimeStamp: SYSTEMTIME): string;
 begin
   Result := Format('%.4d-%.2d-%.2d %.2d:%.2d:%.2d:%.3d', [ATimeStamp.Year, ATimeStamp.Month, ATimeStamp.Day, 
